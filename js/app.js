@@ -20,6 +20,8 @@ let ballColor = "#0095DD";
 let paddleHeight = 10;
 let paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2;
+let rightPressed = false;
+let leftPressed = false;
 
 let drawBall = function() {
   ctx.beginPath();
@@ -50,9 +52,35 @@ function draw() {
   if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
     dy = -dy;
     ballColor = `${getRandomColor()}`;
-  }
+  } //reverses the ball's trajectory when part of the ball touches TOP AND BOTTUM borders
 
   x += dx;
   y += dy;
-} //reverses the ball's trajectory when part of the ball touches TOP AND BOTTUM borders
+
+  if (rightPressed && paddleX < canvas.width - paddleWidth) {
+    paddleX += 7;
+  } else if (leftPressed && paddleX > 0) {
+    paddleX -= 7;
+  }
+} //checks for LEFT and RIGHT Btn presses and lets the padel move acrross the screen until reaching broder 
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+  if (e.keyCode == 39) {
+    rightPressed = true;
+  } else if (e.keyCode == 37) {
+    leftPressed = true;
+  }
+}
+
+function keyUpHandler(e) {
+  if (e.keyCode == 39) {
+    rightPressed = false;
+  } else if (e.keyCode == 37) {
+    leftPressed = false;
+  }
+}
+
 setInterval(draw, 10);
