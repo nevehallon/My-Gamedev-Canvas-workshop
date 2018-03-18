@@ -49,10 +49,12 @@ function draw() {
     ballColor = `${getRandomColor()}`;
   } //reverses the ball's trajectory when part of the ball touches SIDE borders
 
-  if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
-    dy = -dy;
-    ballColor = `${getRandomColor()}`;
-  } //reverses the ball's trajectory when part of the ball touches TOP AND BOTTUM borders
+  if (y + dy < ballRadius) {
+    dy = -dy; //reverses the ball's trajectory when part of the ball touches TOP border
+  } else if (y + dy > canvas.height - ballRadius) { // or hits the bottom 
+    alert("GAME OVER");
+    document.location.reload();
+  }
 
   x += dx;
   y += dy;
@@ -62,7 +64,7 @@ function draw() {
   } else if (leftPressed && paddleX > 0) {
     paddleX -= 7;
   }
-} //checks for LEFT and RIGHT Btn presses and lets the padel move acrross the screen until reaching broder 
+} //checks for LEFT and RIGHT Btn presses and lets the padel move acrross the screen until reaching broder
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
