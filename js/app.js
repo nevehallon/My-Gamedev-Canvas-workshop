@@ -51,9 +51,15 @@ function draw() {
 
   if (y + dy < ballRadius) {
     dy = -dy; //reverses the ball's trajectory when part of the ball touches TOP border
-  } else if (y + dy > canvas.height - ballRadius) { // or hits the bottom 
-    alert("GAME OVER");
-    document.location.reload();
+    ballColor = `${getRandomColor()}`;
+  } else if (y + dy > canvas.height - ballRadius) { // or hits the bottom
+    if (x > paddleX && x < paddleX + paddleWidth) { // but btw the width of the paddel
+      dy = -dy;
+      ballColor = `${getRandomColor()}`;
+    } else { // but not the paddel
+      alert("GAME OVER");
+      document.location.reload();
+    }
   }
 
   x += dx;
