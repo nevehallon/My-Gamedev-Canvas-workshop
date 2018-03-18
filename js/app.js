@@ -8,6 +8,8 @@ let dx = 2;
 let dy = -2;
 
 function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // this rectangle will be cleared of any content previously painted there
   ctx.beginPath();
   ctx.arc(x, y, 10, 0, Math.PI * 2);
   ctx.fillStyle = "#0095DD";
