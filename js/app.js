@@ -40,7 +40,8 @@ for (c = 0; c < brickColumnCount; c++) {
   for (r = 0; r < brickRowCount; r++) {
     bricks[c][r] = {
       x: 0,
-      y: 0
+      y: 0,
+      status: 1
     };
   }
 }
@@ -64,15 +65,31 @@ function drawPaddle() {
 function drawBricks() {
   for (c = 0; c < brickColumnCount; c++) {
     for (r = 0; r < brickRowCount; r++) {
-      let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
-      let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
-      bricks[c][r].x = brickX;
-      bricks[c][r].y = brickY;
-      ctx.beginPath();
-      ctx.rect(brickX, brickY, brickWidth, brickHeight);
-      ctx.fillStyle = "#0095DD";
-      ctx.fill();
-      ctx.closePath();
+      if (bricks[c][r].status == 1) {
+        let brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+        let brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+        bricks[c][r].x = brickX;
+        bricks[c][r].y = brickY;
+        ctx.beginPath();
+        ctx.rect(brickX, brickY, brickWidth, brickHeight);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+  }
+}
+
+function collisionDetection() {
+  for (c = 0; c < brickColumnCount; c++) {
+    for (r = 0; r < brickRowCount; r++) {
+      let b = bricks[c][r];
+      if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+        if (b.status == 1) {
+          dy = -dy;
+          b.status = 0;
+        }
+      }
     }
   }
 }
@@ -82,6 +99,7 @@ function draw() {
   drawBricks();
   drawBall();
   drawPaddle();
+  collisionDetection();
 
   if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
     dx = -dx;
@@ -103,14 +121,14 @@ function draw() {
     }
   }
 
-  x += dx;
-  y += dy;
-
   if (rightPressed && paddleX < canvas.width - paddleWidth) {
     paddleX += 7;
   } else if (leftPressed && paddleX > 0) {
     paddleX -= 7;
   }
+
+  x += dx;
+  y += dy;
 } //checks for LEFT and RIGHT Btn presses and lets the padel move acrross the screen until reaching broder
 
 document.addEventListener("keydown", keyDownHandler, false);
