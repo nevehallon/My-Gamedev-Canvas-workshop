@@ -160,6 +160,8 @@ function draw() {
 
   x += dx;
   y += dy;
+
+  requestAnimationFrame(draw);
 } //checks for LEFT and RIGHT Btn presses and lets the padel move acrross the screen until reaching broder
 
 document.addEventListener("keydown", keyDownHandler, false);
@@ -190,4 +192,4 @@ function mouseMoveHandler(e) {
   }
 }
 
-setInterval(draw, 10);
+draw();
